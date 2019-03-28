@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header :: header('系统设置')">
+</head>
+
+<body id="page-top" onload="onload()">
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top" th:include="navbar :: navbar">
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav" th:include="sidebar :: sidebar">
+
+    </ul>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a th:href="@{index.html}">后台管理系统</a>
+          </li>
+          <li class="breadcrumb-item active">系统设置</li>
+        </ol>
+
+        <!-- Page Content -->
+        <h1>系统设置</h1>
+        <hr>
+        <p>您可以在此处设置系统基本信息</p>
+        <div class="row">
+          <div class="col-12">
+            <form id="updateForm" action="/updateConfig" method="post">
+              <input type="hidden" name="cid" th:value="${data?.cid}">
+              <div class="form-group">
+                <label>联系地址:</label>
+                <input type="text" class="form-control" th:value="${data?.address}" name="address" />
+              </div>
+              <div class="form-group">
+                <label>联系电话1(手机号码):</label>
+                <input type="text" class="form-control" th:value="${data?.phone1}" name="phone1" />
+              </div>
+              <div class="form-group">
+                <label>联系电话2(座机号码):</label>
+                <input type="text" class="form-control" th:value="${data?.phone2}" name="phone2" />
+              </div>
+              <div class="form-group">
+                <label>电子邮件:</label>
+                <input type="text" class="form-control" th:value="${data?.email1}" name="email1" />
+              </div>
+              <div class="form-group">
+                <label>关于我们信息:</label>
+                <input type="hidden" class="form-control" th:value="${data?.aboutus}" name="aboutus" />
+                <div id="aboutus"></div>
+              </div>
+              <div class="form-group">
+                <label>底部关于我们信息:</label>
+                <textarea name="bottomabout" id="" rows="10" class="form-control" th:text="${data?.bottomabout}"></textarea>
+              </div>
+            </form>
+            <div class="col-12" style="text-align:right;margin-bottom:3%;">
+              <button class="btn btn-info" onclick="updateConfig()">修改信息</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <footer class="sticky-footer" th:include="footer :: footer">
+      </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:include="quit :: quit">
+
+  </div>
+
+<div th:include="jsbottom :: jsbottom"></div>
+  <script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+
+  <script th:inline="javascript">
+
+    var E = window.wangEditor;
+    var aboutus = new E("#aboutus");
+    aboutus.customConfig.uploadImgServer = "/file/upload";
+    aboutus.customConfig.uploadFileName = 'files'
+    aboutus.create();
+
+    jQuery(function(){
+      var pagename = "config_manage.html";
+      jQuery(".nav-link[href='"+pagename+"']").parent().addClass("active");
+    })
+
+    function onload()
+    {
+      var code = [[${message?.code}]];
+      var msg = [[${message?.msg}]];
+
+      var data = [[${data}]]
+
+      if(data!=null)
+      {
+        aboutus.txt.html(data.aboutus);
+      }
+
+      if(code == 200 || code == 500)
+      {
+        alert(msg);
+        if(code!==500) {
+          window.location.href = "config_manage.html";
+        }
+      }
+    }
+
+
+    function updateConfig()
+    {
+      jQuery("[name=aboutus]").val(aboutus.txt.html());
+      jQuery("#updateForm").submit();
+    }
+
+  </script>
+
+</body>
+
+</html>

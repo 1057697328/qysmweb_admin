@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header :: header('合作机构管理')">
+</head>
+
+<body id="page-top" onload="onload()">
+
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top" th:include="navbar :: navbar">
+</nav>
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav" th:include="sidebar :: sidebar">
+
+    </ul>
+
+    <div id="content-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{index.html}">后台管理系统</a>
+                </li>
+                <li class="breadcrumb-item active">合作机构</li>
+            </ol>
+
+            <!-- Page Content -->
+            <h1>合作机构</h1>
+            <hr>
+            <p>您可以在此处管理站点合作机构</p>
+
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-success" onclick="jQuery('#addModal').modal('show')">添加合作机构</button>
+                    <div class="table-responsive" style="margin-top:1%;">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>合作机构编号</th>
+                                <th>合作机构名称</th>
+                                <th>合作机构Logo图URL地址</th>
+                                <th>合作机构网站地址</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="coop : ${pageData?.list}">
+                                <td th:text="${coop?.coid}"></td>
+                                <td th:text="${coop?.coname}"></td>
+                                <td><img style="width:10rem;" th:src="@{${coop?.imgpath}}"></td>
+                                <td th:text="${coop.weburl}"></td>
+                                <td>
+                                    <button class="btn btn-info"
+                                            th:onclick="'javascript:getCoop(\''+${coop?.coid}+'\');'">修改合作机构信息
+                                    </button>
+                                    <button class="btn btn-danger"
+                                            th:onclick="'javascript:deleteCoop(\''+${coop?.coid}+'\');'">删除
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer" th:include="footer :: footer">
+        </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" th:include="quit :: quit">
+
+</div>
+
+<!--新增Modal-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModal">添加合作机构</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" method="post" enctype="multipart/form-data" action="/addCoop">
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构标题:</label>
+                        <input name="coname" type="text" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构Logo图URL地址:</label>
+                        <input name="picture" type="file" class="form-control-file"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构网站地址:</label>
+                        <input name="weburl" type="text" class="form-control"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addCoop()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改Modal-->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModal">修改合作机构信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" method="post" enctype="multipart/form-data" action="/updateCoop">
+                    <!--合作机构编号-->
+                    <input type="hidden" name="coid"/>
+                    <!--合作机构创建时间-->
+                    <!--<input type="hidden" name="createdate" />-->
+                    <!--封面路径-->
+                    <input type="hidden" name="imgpath"/>
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构标题:</label>
+                        <input name="coname" type="text" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构Logo图URL地址(如您不修改封面图则请勿选择图片):</label>
+                        <input name="picture" type="file" class="form-control-file"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">合作机构网站地址:</label>
+                        <input name="weburl" type="text" class="form-control"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="updateCoop()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:include="jsbottom :: jsbottom"></div>
+
+<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script th:inline="javascript">
+
+    var E = window.wangEditor;
+    var ndetail_add = new E(".ndetail_add");
+    ndetail_add.customConfig.uploadImgServer = "/file/upload";
+    ndetail_add.customConfig.uploadFileName = 'files'
+    ndetail_add.create();
+
+
+    var ndetail_update = new E(".ndetail_update");
+    ndetail_update.customConfig.uploadImgServer = "/file/upload";
+    ndetail_update.customConfig.uploadFileName = 'files'
+    ndetail_update.create();
+
+    jQuery(function () {
+        var pagename = "cooperation.html";
+        jQuery(".nav-link[href='" + pagename + "']").parent().addClass("active");
+    })
+
+
+    function addCoop() {
+        jQuery('#addForm').submit();
+    }
+
+
+    function updateCoop() {
+        jQuery("#updateForm").submit();
+    }
+
+    function getCoop(coid) {
+        jQuery.post(CONSTANT.URL + "/coop/get/" + coid, "", function (json) {
+            if (json.code !== 500) {
+                jQuery("#updateForm [name=coid]").val(json.data.coid);
+                jQuery("#updateForm [name=coname]").val(json.data.coname);
+                jQuery("#updateForm [name=imgpath]").val(json.data.imgpath);
+                jQuery("#updateForm [name=weburl]").val(json.data.weburl);
+                jQuery("#updateModal").modal('show');
+            } else {
+                alert(json.msg);
+                return false;
+            }
+        })
+    }
+
+
+    function onload() {
+        var code = [[${message?.code}]];
+        var msg = [[${message?.msg}]];
+        if (code == 200 || code == 500) {
+            alert(msg);
+            if (code !== 500) {
+                window.location.href = "cooperation.html";
+            }
+        }
+    }
+
+
+    function deleteCoop(coid) {
+        var con = confirm("您确定要删除编号为[" + coid + "]的合作机构吗？");
+        if (con) {
+            window.location.href = CONSTANT.URL + "/deleteCoop?coid=" + coid;
+        }
+    }
+
+</script>
+</body>
+
+</html>

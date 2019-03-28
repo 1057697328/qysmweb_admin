@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header :: header('展示商品管理')">
+</head>
+
+<body id="page-top" onload="onload()">
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top" th:include="navbar :: navbar">
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav" th:include="sidebar :: sidebar">
+
+    </ul>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a th:href="@{index.html}">后台管理系统</a>
+          </li>
+          <li class="breadcrumb-item active">展示商品管理</li>
+        </ol>
+
+        <!-- Page Content -->
+        <h1>展示商品管理</h1>
+        <hr>
+        <p>您可以在此处管理官网的展示商品信息</p>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-success" onclick="jQuery('#addModal').modal('show')">添加展示商品</button>
+            <div class="table-responsive" style="margin-top:1%;">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>展示商品编号</th>
+                    <th>展示商品图片</th>
+                    <th>展示商品名称</th>
+                    <th>展示商品价格</th>
+                    <th>展示商品购买链接</th>
+                    <th>展示商品类型</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="goods,goodsStat : ${pageData?.list}">
+                    <td th:text="${goods.gid}"></td>
+                    <td><img style="width:10rem;" th:src="@{${goods.imgpath}}"></td>
+                    <td th:text="${goods?.gname}"></td>
+                    <td th:text="${goods?.price}+'元'"></td>
+                    <td th:text="${goods?.buypath}"></td>
+                    <td th:text="${goods?.goodtype.gtypename}"></td>
+                    <td>
+                      <button class="btn btn-info" th:onclick="'javascript:getGoods(\''+${goods?.gid}+'\');'">修改展示商品</button>
+                      <button class="btn btn-danger" th:onclick="'javascript:deleteGoods(\''+${goods?.gid}+'\');'">删除</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <footer class="sticky-footer" th:include="footer :: footer">
+      </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:include="quit :: quit">
+
+  </div>
+
+
+
+
+<!--新增Modal-->
+  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModal">添加展示商品</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addForm" enctype="multipart/form-data" method="post" action="/addGoods">
+            <div class="form-group">
+              <label class="col-form-label">商品图片:</label>
+              <input name="picture" type="file" class="form-control-file" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">商品名称:</label>
+              <input name="gname" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">商品价格:</label>
+              <input name="price" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">购买链接:</label>
+              <input name="buypath" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">展示商品类型:</label>
+              <select name="gtypeid" class="form-control">
+                <option th:each="goodtype,goodtypeStat : ${goodtypes}" th:text="${goodtype?.gtypename}" th:value="${goodtype?.gtypeid}">
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="jQuery('#addForm').submit()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--修改Modal-->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModal">修改展示商品</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="updateForm" enctype="multipart/form-data" method="post" action="/updateGoods">
+            <!--展示商品编号-->
+            <input type="hidden" name="gid" />
+            <!--原图片路径-->
+            <input type="hidden" name="imgpath" />
+            <div class="form-group">
+              <label class="col-form-label">商品图片(如不修改图片则请勿选择图片):</label>
+              <input name="picture" type="file" class="form-control-file" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">商品名称:</label>
+              <input name="gname" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">商品价格:</label>
+              <input name="price" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">购买链接:</label>
+              <input name="buypath" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">展示商品类型:</label>
+              <select name="gtypeid" class="form-control">
+                <option th:each="goodtype,goodtypeStat : ${goodtypes}" th:text="${goodtype?.gtypename}" th:value="${goodtype?.gtypeid}">
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="jQuery('#updateForm').submit()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<div th:include="jsbottom :: jsbottom"></div>
+
+  <script th:inline="javascript">
+
+    function onload()
+    {
+      var code = [[${message?.code}]];
+      var msg = [[${message?.msg}]];
+      if(code == 200 || code == 500)
+      {
+        alert(msg);
+        if(code!==500) {
+          window.location.href = "goods_manage.html";
+        }
+      }
+    }
+
+    jQuery(function(){
+      var pagename = "goods_manage.html";
+      jQuery(".nav-link[href='"+pagename+"']").parent().addClass("active");
+
+    })
+
+
+
+    function getGoods(gid)
+    {
+      jQuery.post(CONSTANT.URL+"/goods/get/"+gid,"",function(json){
+        if(json.code!==500)
+        {
+          jQuery("#updateForm [name=gid]").val(json.data.gid);
+          jQuery("#updateForm [name=imgpath]").val(json.data.imgpath);
+          jQuery("#updateForm [name=gname]").val(json.data.gname);
+          jQuery("#updateForm [name=price]").val(json.data.price);
+          jQuery("#updateForm [name=buypath]").val(json.data.buypath);
+          jQuery("#updateForm [name=gtypeid]").find("option[value="+json.data.gtypeid+"]").prop("selected",true);
+          jQuery("#updateModal").modal('show');
+        }
+        else
+        {
+          alert(json.msg);
+          return false;
+        }
+      })
+    }
+
+    /**
+     * 删除展示商品
+     * @param bid
+     */
+    function deleteGoods(gid)
+    {
+      var con = confirm("您确定要删除编号为["+gid+"]的展示商品吗？");
+      if(con)
+      {
+        window.location.href=CONSTANT.URL+"/deleteGoods?gid="+gid;
+      }
+    }
+
+  </script>
+</body>
+
+</html>

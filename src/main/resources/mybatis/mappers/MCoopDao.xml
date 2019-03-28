@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lightwing.mediweb_admin.dao.MCoopDao">
+    <resultMap id="BaseResultMap" type="net.lightwing.mediweb_admin.pojo.MCoop">
+        <id column="coid" jdbcType="INTEGER" property="coid"/>
+        <result column="coname" jdbcType="VARCHAR" property="coname"/>
+        <result column="imgpath" jdbcType="VARCHAR" property="imgpath"/>
+        <result column="weburl" jdbcType="VARCHAR" property="weburl"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    coid, coname, imgpath, weburl
+  </sql>
+    <select id="selectByExample" parameterType="net.lightwing.mediweb_admin.pojo.MCoopExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from m_coop
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from m_coop
+        where coid = #{coid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from m_coop
+    where coid = #{coid,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="net.lightwing.mediweb_admin.pojo.MCoopExample">
+        delete from m_coop
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" keyColumn="coid" keyProperty="coid" parameterType="net.lightwing.mediweb_admin.pojo.MCoop"
+            useGeneratedKeys="true">
+    insert into m_coop (coname, imgpath, weburl
+      )
+    values (#{coname,jdbcType=VARCHAR}, #{imgpath,jdbcType=VARCHAR}, #{weburl,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" keyColumn="coid" keyProperty="coid"
+            parameterType="net.lightwing.mediweb_admin.pojo.MCoop" useGeneratedKeys="true">
+        insert into m_coop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coname != null">
+                coname,
+            </if>
+            <if test="imgpath != null">
+                imgpath,
+            </if>
+            <if test="weburl != null">
+                weburl,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coname != null">
+                #{coname,jdbcType=VARCHAR},
+            </if>
+            <if test="imgpath != null">
+                #{imgpath,jdbcType=VARCHAR},
+            </if>
+            <if test="weburl != null">
+                #{weburl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="count" resultType="java.lang.Integer">
+    select count(*) from m_coop
+  </select>
+    <select id="selectWithType" resultMap="BaseResultMap">
+        select * from m_coop
+    limit #{pageindex},#{pagesize};
+
+    </select>
+    <select id="selectByName" resultType="net.lightwing.mediweb_admin.pojo.MCoop">
+        select * from m_coop where coname = #{name};
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update m_coop
+        <set>
+            <if test="record.coid != null">
+                coid = #{record.coid,jdbcType=INTEGER},
+            </if>
+            <if test="record.coname != null">
+                coname = #{record.coname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.imgpath != null">
+                imgpath = #{record.imgpath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.weburl != null">
+                weburl = #{record.weburl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update m_coop
+        set coid = #{record.coid,jdbcType=INTEGER},
+        coname = #{record.coname,jdbcType=VARCHAR},
+        imgpath = #{record.imgpath,jdbcType=VARCHAR},
+        weburl = #{record.weburl,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.lightwing.mediweb_admin.pojo.MCoop">
+        update m_coop
+        <set>
+            <if test="coname != null">
+                coname = #{coname,jdbcType=VARCHAR},
+            </if>
+            <if test="imgpath != null">
+                imgpath = #{imgpath,jdbcType=VARCHAR},
+            </if>
+            <if test="weburl != null">
+                weburl = #{weburl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where coid = #{coid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.lightwing.mediweb_admin.pojo.MCoop">
+    update m_coop
+    set coname = #{coname,jdbcType=VARCHAR},
+      imgpath = #{imgpath,jdbcType=VARCHAR},
+      weburl = #{weburl,jdbcType=VARCHAR}
+    where coid = #{coid,jdbcType=INTEGER}
+  </update>
+</mapper>

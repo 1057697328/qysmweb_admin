@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header :: header('轮播管理')">
+</head>
+
+<body id="page-top" onload="onload()">
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top" th:include="navbar :: navbar">
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav" th:include="sidebar :: sidebar">
+
+    </ul>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a th:href="@{index.html}">后台管理系统</a>
+          </li>
+          <li class="breadcrumb-item active">轮播管理</li>
+        </ol>
+
+        <!-- Page Content -->
+        <h1>轮播管理</h1>
+        <hr>
+        <p>您可以在此处管理官网首页轮播图片。</p>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-success" onclick="jQuery('#addModal').modal('show')">添加轮播</button>
+            <div class="table-responsive" style="margin-top:1%;">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>轮播编号</th>
+                    <th>轮播图片</th>
+                    <th>轮播小标题</th>
+                    <th>轮播大标题</th>
+                    <th>显示按钮</th>
+                    <th>按钮文字</th>
+                    <th>按钮跳转地址</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="banner,bannerStat : ${pageData?.list}">
+                    <td th:text="${banner?.bid}"></td>
+                    <td><img style="width:15rem;" th:src="@{${banner.imgpath}}"></td>
+                    <td th:text="${banner?.smalltitle}"></td>
+                    <td th:text="${banner?.bigtitle}"></td>
+                    <td th:text="${banner?.showbtn==0?'显示按钮':'不显示按钮'}"></td>
+                    <td th:text="${banner?.btntext}"></td>
+                    <td th:text="${banner?.btnhref}"></td>
+                    <td>
+                      <button class="btn btn-info" th:onclick="'javascript:getBanner(\''+${banner?.bid}+'\');'">修改轮播信息</button>
+                      <button class="btn btn-danger" th:onclick="'javascript:deleteBanner(\''+${banner?.bid}+'\');'">删除轮播</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <footer class="sticky-footer" th:include="footer :: footer">
+
+      </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:include="quit :: quit">
+
+  </div>
+
+
+
+
+
+  <!--添加轮播Modal-->
+  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModal">添加轮播</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addForm" method="post" enctype="multipart/form-data" action="/addBanner">
+            <!--轮播编号-->
+            <input name="bid" type="hidden" class="form-control" >
+            <!--是否显示按钮-->
+            <input name="showbtn" type="hidden" class="form-control" >
+            <!--图片地址-->
+            <input name="imgpath" type="hidden" class="form-control" >
+            <div class="form-group">
+              <label class="col-form-label">轮播图片:</label>
+              <input name="bannerpic" type="file" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">轮播大标题:</label>
+              <input name="bigtitle" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">轮播小标题:</label>
+              <input name="smalltitle" type="text" class="form-control">
+            </div>
+            <div class="form-check">
+              <label class="checkbox-inline">
+                <input name="showbtns" type="checkbox" class="form-check-input" onclick="this.value=(this.value==0)?1:0">
+                <label class="form-check-label" for="showbtns">是否显示按钮:</label>
+              </label>
+
+            </div>
+            <div class="showbtn" style="display: none">
+              <div class="form-group">
+                <label class="col-form-label">按钮标题:</label>
+                <input name="btntext" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">按钮链接:</label>
+                <input name="btnhref" type="text" class="form-control">
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="submit" id="addBtn" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!--修改轮播Modal-->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModal">修改轮播信息</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="updateForm" method="post" enctype="multipart/form-data" action="/updateBanner">
+            <!--轮播编号-->
+            <input name="bid" type="hidden" class="form-control" >
+            <!--图片地址-->
+            <input name="imgpath" type="hidden" class="form-control" >
+            <!--是否显示按钮-->
+            <input name="showbtn" type="hidden" class="form-control" >
+            <div class="form-group">
+              <label class="col-form-label">轮播图片:</label>
+              <input name="bannerpic" type="file" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">轮播大标题:</label>
+              <input name="bigtitle" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">轮播小标题:</label>
+              <input name="smalltitle" type="text" class="form-control">
+            </div>
+            <div class="form-check">
+              <label class="checkbox-inline">
+                <input name="showbtns" type="checkbox" class="form-check-input" onclick="this.value=(this.value==0)?1:0">
+                <label class="form-check-label" for="showbtns">是否显示按钮:</label>
+              </label>
+
+            </div>
+            <div class="showbtn" style="display: none">
+              <div class="form-group">
+                <label class="col-form-label">按钮标题:</label>
+                <input name="btntext" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">按钮链接:</label>
+                <input name="btnhref" type="text" class="form-control">
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="submit" id="updateBtn" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div th:include="jsbottom :: jsbottom"></div>
+
+  <script th:inline="javascript">
+
+    function onload()
+    {
+
+      jQuery("#addForm [name=showbtns]").val(1)
+
+      var code = [[${message?.code}]]
+      var msg = [[${message?.msg}]]
+      if(code===200 || code==500)
+      {
+        alert(msg);
+        window.location.href="banner_manage.html";
+      }
+    }
+
+
+
+    jQuery(function(){
+      var pagename = "banner_manage.html";
+      jQuery(".nav-link[href='"+pagename+"']").parent().addClass("active");
+
+      jQuery("[name=showbtn]").on('click',function(){
+        if(jQuery(this).val()=='1')
+        {
+          jQuery(".showbtn").hide();
+        }
+        else
+        {
+          jQuery(".showbtn").show();
+        }
+      })
+
+      jQuery("[name=showbtns]").on('click',function(){
+        console.info(jQuery(this).val());
+        if(jQuery(this).val()==1)
+        {
+          jQuery(".showbtn").hide();
+        }
+        else
+        {
+          jQuery(".showbtn").show();
+        }
+      })
+
+
+      jQuery("#updateBtn").on('click',function(){
+        console.info(jQuery("#updateForm [name=showbtns]").val());
+        jQuery("#updateForm [name=showbtn]").val(jQuery("#updateForm [name=showbtns]").val());
+        console.info(jQuery("#updateForm [name=showbtn]").val())
+        jQuery("#updateForm").submit();
+      })
+
+      jQuery("#addBtn").on('click',function(){
+        console.info(jQuery("#addForm [name=showbtns]").val());
+        jQuery("#addForm [name=showbtn]").val(jQuery("#addForm [name=showbtns]").val());
+        console.info(jQuery("#addForm [name=showbtn]").val())
+        jQuery("#addForm").submit();
+      })
+
+    })
+
+    /**
+     * Ajax获取轮播信息
+     * @param bid
+     */
+    function getBanner(bid)
+    {
+      jQuery.post(CONSTANT.URL+"/banner/get/"+bid,"",function(json) {
+
+        if(json.code!==200)
+        {
+          alert(json.msg);
+          return false;
+        }
+        else
+        {
+          jQuery("#updateForm [name=bid]").val(json.data.bid);
+          jQuery("#updateForm [name=imgpath]").val(json.data.imgpath);
+          jQuery("#updateForm [name=showbtn]").val(json.data.showbtn);
+          jQuery("#updateForm [name=bigtitle]").val(json.data.bigtitle);
+          jQuery("#updateForm [name=smalltitle]").val(json.data.smalltitle);
+          jQuery("#updateForm [name=showbtns]").prop('checked',json.data.showbtn==0?true:false);
+          json.data.showbtn==0?jQuery('#updateForm [name=showbtns]').val(0):jQuery('#updateForm [name=showbtns]').val(1)
+
+          jQuery("#updateForm [name=btntext]").val(json.data.btntext);
+          jQuery("#updateForm [name=btnhref]").val(json.data.btnhref);
+          if(jQuery('#updateForm [name=showbtns]').prop("checked"))
+          {
+            jQuery("#updateForm .showbtn").show();
+          }
+
+          jQuery("#updateModal").modal('show');
+        }
+
+      })
+    }
+
+
+    /**
+     * 删除轮播
+     * @param bid
+     */
+    function deleteBanner(bid)
+    {
+      var con = confirm("您确定要删除编号为["+bid+"]的轮播吗？");
+      if(con)
+      {
+        window.location.href=CONSTANT.URL+"/deleteBanner?bid="+bid;
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
