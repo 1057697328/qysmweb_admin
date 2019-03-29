@@ -101,7 +101,7 @@ public class CooperationController {
             service.updateByPrimaryKeySelective(coop);
 
             model.addAttribute("message", MessageBack.MSG(200, "合作机构更新成功!"));
-            return "cooperation.html.html";
+            return "cooperation.html";
         } catch (Exception e) {
             model.addAttribute("message", MessageBack.MSG(500, "合作机构更新失败!"));
             return "cooperation.html";

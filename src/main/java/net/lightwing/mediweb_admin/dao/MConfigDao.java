@@ -3,6 +3,7 @@ package net.lightwing.mediweb_admin.dao;
 import java.util.List;
 import net.lightwing.mediweb_admin.pojo.MConfig;
 import net.lightwing.mediweb_admin.pojo.MConfigExample;
+import net.lightwing.mediweb_admin.pojo.MConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +36,9 @@ public interface MConfigDao {
     int updateByPrimaryKeyWithBLOBs(MConfig record);
 
     int updateByPrimaryKey(MConfig record);
+
+    List<MConfig> selectWithType(@Param("pageindex") Integer pageindex, @Param("pagesize") Integer pagesize);
+
+
+    int count();
 }
