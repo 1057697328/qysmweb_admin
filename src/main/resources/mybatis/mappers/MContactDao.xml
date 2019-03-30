@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    cid, `name`, phone, subject, message, subtime
+    cid, `name`, subject, message, subtime
   </sql>
   <select id="selectByExample" parameterType="net.lightwing.mediweb_admin.pojo.MContactExample" resultMap="BaseResultMap">
     select
