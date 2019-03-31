@@ -45,7 +45,7 @@
                                 <th>专家名称</th>
                                 <th>专家职位</th>
                                 <th>专家头像</th>
-                                <th>专家简介</th>
+                                <!--<th>专家简介</th>-->
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -55,7 +55,7 @@
                                 <td th:text="${Experts?.dname}"></td>
                                 <td th:text="${Experts?.djob}"></td>
                                 <td><img style="width:10rem;" th:src="@{${Experts?.imgpath}}"></td>
-                                <td th:text="${Experts?.ddesc}"></td>
+                                <!--<td th:utext="${Experts?.ddesc}"></td>-->
                                 <td>
                                     <button class="btn btn-info"
                                             th:onclick="'javascript:getExperts(\''+${Experts?.did}+'\');'">修改专家信息
@@ -172,7 +172,7 @@
                     <div class="form-group">
                         <label class="col-form-label">简介:</label>
                         <input type="hidden" name="ddesc">
-                        <div class="ddesc_add"></div>
+                        <div class="ddesc_update"></div>
                     </div>
                 </form>
             </div>
@@ -225,6 +225,8 @@
             if (json.code !== 500) {
                 jQuery("#updateForm [name=did]").val(json.data.did);
                 jQuery("#updateForm [name=dname]").val(json.data.dname);
+                jQuery("#updateForm [name=djob]").val(json.data.djob);
+
                 jQuery("#updateForm [name=imgpath]").val(json.data.imgpath);
                 ddesc_update.txt.html(json.data.ddesc);
                 jQuery("#updateForm [name=ddesc]").val(json.data.ddesc);

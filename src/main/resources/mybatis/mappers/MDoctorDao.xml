@@ -6,13 +6,14 @@
         <result column="dname" jdbcType="VARCHAR" property="dname"/>
         <result column="djob" jdbcType="VARCHAR" property="djob"/>
         <result column="imgpath" jdbcType="VARCHAR" property="imgpath"/>
+        <result column="ddesc" property="ddesc"/>
     </resultMap>
     <sql id="Blob_Column_List">
     ddesc
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap">
         select
-        <include refid="Blob_Column_List"/>
+        *
         from m_doctor
         where did = #{did,jdbcType=INTEGER}
     </select>
