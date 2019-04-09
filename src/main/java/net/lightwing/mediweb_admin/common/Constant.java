@@ -14,7 +14,7 @@ public class Constant {
      */
 //    public static final String UPLOADPATH="/usr/local/qysm_files/images/";
 
-    public static final String UPLOADPATH = "G:/qysmweb_files/images/";
+    public static final String UPLOADPATH = "D:/qysmweb_files/images/";
     /**
      * 域名
      */
