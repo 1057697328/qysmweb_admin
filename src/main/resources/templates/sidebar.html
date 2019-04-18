@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <body>
-<!-- Sidebar -->
-<ul class="sidebar navbar-nav" th:fragment="sidebar">
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{index.html}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>仪表盘</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{banner_manage.html}">
-            <i class="fas fa-fw fa-images"></i>
-            <span>轮播管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{news_manage.html}">
-            <i class="fas fa-fw fa-newspaper"></i>
-            <span>新闻管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{newstype_manage.html}">
-            <i class="fas fa-fw fa-file-alt"></i>
-            <span>新闻类型管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{cooperation.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>合作机构管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{experts_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>专家管理</span>
-        </a>
-    </li>
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav" th:fragment="sidebar">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{index.html}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>仪表盘</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{banner_manage.html}">
+                <i class="fas fa-fw fa-images"></i>
+                <span>轮播管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{news_manage.html}">
+                <i class="fas fa-fw fa-newspaper"></i>
+                <span>新闻管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{newstype_manage.html}">
+                <i class="fas fa-fw fa-file-alt"></i>
+                <span>新闻类型管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{goods_manage.html}">
+                <i class="fas fa-fw fa-newspaper"></i>
+                <span>商品管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{goodtype_manage.html}">
+                <i class="fas fa-fw fa-file-alt"></i>
+                <span>商品类型管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{cooperation.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>合作机构管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{experts_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>专家管理</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{industry_plate_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>产业板块管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{industry_information_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>产业信息管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{project_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>项目管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{answer_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>科普答疑管理</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{industry_plate_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>产业板块管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{industry_information_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>产业信息管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{project_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>项目管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{answer_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>科普答疑管理</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{contact_manage.html}">
-            <i class="fas fa-fw fa-comments"></i>
-            <span>留言信息管理</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{config_manage.html}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>站点管理</span>
-        </a>
-    </li>
-</ul>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{contact_manage.html}">
+                <i class="fas fa-fw fa-comments"></i>
+                <span>留言信息管理</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{config_manage.html}">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>站点管理</span>
+            </a>
+        </li>
+    </ul>
 </body>
+
 </html>
