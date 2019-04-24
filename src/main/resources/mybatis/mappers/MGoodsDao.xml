@@ -8,6 +8,7 @@
     <result column="buypath" jdbcType="VARCHAR" property="buypath" />
     <result column="gtypeid" jdbcType="INTEGER" property="gtypeid" />
     <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="details" property="details"/>
   </resultMap>
   <resultMap id="goodsWithType" type="net.lightwing.mediweb_admin.pojo.MGoods">
     <id column="gid" jdbcType="INTEGER" property="gid" />
@@ -123,9 +124,9 @@
   </delete>
   <insert id="insert" keyColumn="gid" keyProperty="gid" parameterType="net.lightwing.mediweb_admin.pojo.MGoods" useGeneratedKeys="true">
     insert into m_goods (imgpath, gname, buypath, 
-      gtypeid, price)
+      gtypeid, price,details)
     values (#{imgpath,jdbcType=VARCHAR}, #{gname,jdbcType=VARCHAR}, #{buypath,jdbcType=VARCHAR}, 
-      #{gtypeid,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE})
+      #{gtypeid,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE},#{details})
   </insert>
   <insert id="insertSelective" keyColumn="gid" keyProperty="gid" parameterType="net.lightwing.mediweb_admin.pojo.MGoods" useGeneratedKeys="true">
     insert into m_goods
@@ -145,6 +146,10 @@
       <if test="price != null">
         price,
       </if>
+      <if test="details != null">
+        details,
+      </if>
+      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="imgpath != null">
@@ -162,6 +167,10 @@
       <if test="price != null">
         #{price,jdbcType=DOUBLE},
       </if>
+      <if test="details != null">
+        #{details},
+      </if>
+      
     </trim>
   </insert>
   <select id="countByExample" parameterType="net.lightwing.mediweb_admin.pojo.MGoodsExample" resultType="java.lang.Long">
@@ -194,6 +203,10 @@
       <if test="record.price != null">
         price = #{record.price,jdbcType=DOUBLE},
       </if>
+      <if test="record.details != null">
+        details = #{record.details},
+      </if>
+      
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -206,7 +219,8 @@
       gname = #{record.gname,jdbcType=VARCHAR},
       buypath = #{record.buypath,jdbcType=VARCHAR},
       gtypeid = #{record.gtypeid,jdbcType=INTEGER},
-      price = #{record.price,jdbcType=DOUBLE}
+      price = #{record.price,jdbcType=DOUBLE},
+      details=#{record.details}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -229,6 +243,10 @@
       <if test="price != null">
         price = #{price,jdbcType=DOUBLE},
       </if>
+      <if test="details != null">
+        details = #{details},
+      </if>
+      
     </set>
     where gid = #{gid,jdbcType=INTEGER}
   </update>
@@ -238,7 +256,8 @@
       gname = #{gname,jdbcType=VARCHAR},
       buypath = #{buypath,jdbcType=VARCHAR},
       gtypeid = #{gtypeid,jdbcType=INTEGER},
-      price = #{price,jdbcType=DOUBLE}
+      price = #{price,jdbcType=DOUBLE},
+      details=#{details}
     where gid = #{gid,jdbcType=INTEGER}
   </update>
 </mapper>

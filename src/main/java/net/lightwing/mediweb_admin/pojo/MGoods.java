@@ -37,6 +37,8 @@ public class MGoods implements Serializable {
      */
     private Double price;
 
+    private String details;
+
     private MGoodtype goodtype;
 
     public MGoodtype getGoodtype() {
@@ -51,6 +53,14 @@ public class MGoods implements Serializable {
 
     public Integer getGid() {
         return gid;
+    }
+
+    public void setdetails(String details) {
+        this.details = details;
+    }
+
+    public String getDetails() {
+        return details;
     }
 
     public void setGid(Integer gid) {
