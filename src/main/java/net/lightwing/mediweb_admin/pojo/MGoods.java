@@ -55,7 +55,7 @@ public class MGoods implements Serializable {
         return gid;
     }
 
-    public void setdetails(String details) {
+    public void setDetails(String details) {
         this.details = details;
     }
 

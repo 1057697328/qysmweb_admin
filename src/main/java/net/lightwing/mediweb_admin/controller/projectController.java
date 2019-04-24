@@ -63,10 +63,10 @@ public class projectController {
                 model.addAttribute("message", MessageBack.MSG(200, "该标题已存在。"));
             } else {
                 service.insertSelective(mProject);
-                model.addAttribute("message", MessageBack.MSG(200, "添加項目成功。"));
+                model.addAttribute("message", MessageBack.MSG(200, "添加项目成功。"));
             }
         } catch (Exception e) {
-            model.addAttribute("message", MessageBack.MSG(500, "添加項目失败。"));
+            model.addAttribute("message", MessageBack.MSG(500, "添加项目失败。"));
         }
         return "project_manage.html";
     }

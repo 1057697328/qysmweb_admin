@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    gid, imgpath, gname, buypath, gtypeid, price
+    gid, imgpath, gname, buypath, gtypeid, price,details
   </sql>
   <select id="selectByExample" parameterType="net.lightwing.mediweb_admin.pojo.MGoodsExample" resultMap="BaseResultMap">
     select

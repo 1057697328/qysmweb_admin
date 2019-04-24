@@ -5,7 +5,7 @@
 <head th:include="header :: header('展示商品管理')">
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onload()">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top" th:include="navbar :: navbar">
     </nav>
@@ -97,7 +97,7 @@
 
     <!--新增Modal-->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModal">添加展示商品</h5>
@@ -147,7 +147,7 @@
 
     <!--修改Modal-->
     <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="updateModal">修改展示商品</h5>
@@ -204,7 +204,8 @@
 
 
     <div th:include="jsbottom :: jsbottom"></div>
-    <script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+    <script src="https://unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+
     <script th:inline="javascript">
         var E = window.wangEditor;
         var details_add = new E(".details_add");
@@ -213,25 +214,16 @@
         details_add.create();
 
 
-        var idesc_update = new E(".details_update");
+        var details_update = new E(".details_update");
         details_update.customConfig.uploadImgServer = "/file/upload";
         details_update.customConfig.uploadFileName = 'files'
         details_update.create();
 
         function onload() {
-            var code = [
-                [$ {
-                    message ? .code
-                }]
-            ];
-            var msg = [
-                [$ {
-                    message ? .msg
-                }]
-            ];
-            if (code == 200 || code == 500) {
-                alert(msg);
-                if (code !== 500) {
+            var message = [[${message}]];
+            if (message.code == 200 || message.code == 500) {
+                alert(message.msg);
+                if (message.code !== 500) {
                     window.location.href = "goods_manage.html";
                 }
             }
@@ -242,20 +234,19 @@
         jQuery(function() {
             var pagename = "goods_manage.html";
             jQuery(".nav-link[href='" + pagename + "']").parent().addClass("active");
-
         })
 
 
 
         function addGoods() {
-            var detail = idesc_add.txt.html();
+            var detail = details_add.txt.html();
             jQuery("#addForm [name=details]").val(detail);
             jQuery('#addForm').submit();
         }
 
 
         function updateGoods() {
-            jQuery("#updateForm [name=details]").val(idesc_update.txt.html());
+            jQuery("#updateForm [name=details]").val(details_update.txt.html());
             jQuery("#updateForm").submit();
         }
 
@@ -267,7 +258,7 @@
                     jQuery("#updateForm [name=gname]").val(json.data.gname);
                     jQuery("#updateForm [name=price]").val(json.data.price);
                     jQuery("#updateForm [name=buypath]").val(json.data.buypath);
-                    idesc_update.txt.html(json.data.details);
+                    details_update.txt.html(json.data.details);
                     jQuery("#updateForm [name=details]").val(json.data.details);
                     jQuery("#updateForm [name=gtypeid]").find("option[value=" + json.data.gtypeid + "]").prop("selected", true);
 

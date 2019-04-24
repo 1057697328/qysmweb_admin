@@ -27,5 +27,4 @@ public class MediwebAdminApplication implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH")
                 .allowCredentials(true).maxAge(3600);
     }
-
 }
